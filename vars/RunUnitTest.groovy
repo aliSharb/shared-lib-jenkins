@@ -2,13 +2,14 @@ def call(String testDir) {
     echo "Running Unit Tests in: ${testDir}"
 
     sh """
-        cd ${env.WORKSPACE}
+        cd ${env.WORKSPACE}/${testDir}
 
-        if [ ! -d "${testDir}" ]; then
+        if [ ! -d "." ]; then
             echo "Error: Test directory ${testDir} not found!"
             exit 1
         fi
 
-        mvn -B test
+        cd ${env.WORKSPACE}  # Go back to root project directory
+        mvn test
     """
 }
