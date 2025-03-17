@@ -1,9 +1,14 @@
-def call() {
-    echo "Running Unit Tests..."
+def call(String testDir) {
+    echo "Running Unit Tests in: ${testDir}"
 
-    // Navigate to the project root and execute Maven tests
     sh """
         cd ${env.WORKSPACE}
-        mvn test
+
+        if [ ! -d "${testDir}" ]; then
+            echo "Error: Test directory ${testDir} not found!"
+            exit 1
+        fi
+
+        mvn -B test
     """
 }
