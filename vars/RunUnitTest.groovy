@@ -1,15 +1,13 @@
-def call(String testDir) {
-    echo "Running Unit Tests in: ${testDir}"
+def call(String appDir) {
+    echo "Running Unit Tests in: ${appDir}"
 
+    // Navigate to the application directory and execute Maven tests
     sh """
-        cd ${env.WORKSPACE}/${testDir}
-
-        if [ ! -d "." ]; then
-            echo "Error: Test directory ${testDir} not found!"
+        cd ${env.WORKSPACE}/${appDir}
+        if [ ! -f "pom.xml" ]; then
+            echo "No pom.xml found in ${env.WORKSPACE}/${appDir}!"
             exit 1
         fi
-
-        cd ${env.WORKSPACE}  # Go back to root project directory
         mvn test
     """
 }
