@@ -1,9 +1,14 @@
-def call() {
-    echo "Building the Java application..."
+def call(String appDir) {
+    echo "Building the Java application in ${appDir}..."
 
-    // Navigate to the project root and build using Maven
+    // Ensure the directory exists before running Maven
     sh """
-        cd ${env.WORKSPACE}
-        mvn clean package
+        if [ -d "${appDir}" ]; then
+            cd ${appDir}
+            mvn clean package
+        else
+            echo "Error: Directory ${appDir} does not exist!"
+            exit 1
+        fi
     """
 }
